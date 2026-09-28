@@ -12,3 +12,7 @@ __pycache__/
 .venv/
 env/
 ml_env/
+
+_build/
+osha_group_time_results/
+osha_temporal_results/

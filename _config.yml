@@ -1,0 +1,11 @@
+title: "OSHA ITA 2023: clasificación de resultados de incidentes laborales"
+author: "Proyecto de Machine Learning"
+only_build_toc_files: true
+execute:
+  execute_notebooks: 'off'
+html:
+  use_repository_button: false
+sphinx:
+  config:
+    language: es
+    html_show_copyright: false

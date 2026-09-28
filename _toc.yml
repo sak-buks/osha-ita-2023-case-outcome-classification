@@ -1,0 +1,6 @@
+format: jb-book
+root: intro
+chapters:
+  - file: osha_2023_eda_revisado
+  - file: results_summary
+  - file: compliance_matrix
