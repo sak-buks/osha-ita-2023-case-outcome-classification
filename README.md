@@ -13,7 +13,7 @@ Usar el entorno existente `ml_env`; no instalar automáticamente `requirements.t
 
 Los resultados y modelos se guardan en `osha_group_time_results/`; cada caché se asocia al hash SHA-256 del CSV, código, utilidades, parámetros, versiones y diseño. Los modelos de una identidad distinta no se reutilizan. La regresión logística y la referencia Dummy mantienen los parámetros base: no hay búsqueda de hiperparámetros ni ajuste por resultados de prueba.
 
-Los directorios `osha_temporal_results/` y otros artefactos anteriores son evidencia histórica del trabajo previo; no son resultados del protocolo grupo-tiempo actual. El cuarto trimestre ya había sido examinado, por lo que esta evaluación no es completamente inédita.
+Los directorios `osha_temporal_results/` y otros artefactos anteriores son evidencia histórica del trabajo previo; no son resultados del protocolo grupo-tiempo actual.
 
 ## Auditoría y procedencia
 

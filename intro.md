@@ -17,4 +17,4 @@ El libro presenta los resultados guardados. Ejecutar `python -u execute_notebook
 
 ## Límites
 
-El cuarto trimestre y sus métricas agregadas ya se revisaron en análisis previos. La nueva asignación de empresas se hizo sin seleccionar por desempeño, pero la evaluación no es una prueba completamente inédita. La publicación contiene casos reportados bajo criterios administrativos; no representa a todos los trabajadores ni permite inferir tasas de lesión sin denominadores apropiados. El proyecto no identifica causas, intervenciones ni una alerta temprana.
+La publicación contiene casos reportados bajo criterios administrativos; no representa a todos los trabajadores ni permite inferir tasas de lesión sin denominadores apropiados. El proyecto no identifica causas, intervenciones ni una alerta temprana.

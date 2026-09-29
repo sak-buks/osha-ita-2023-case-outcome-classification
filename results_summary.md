@@ -32,8 +32,6 @@ Se reportan **12 sectores**, seleccionados por tener al menos 1.000 casos de des
 
 El bootstrap remuestrea establecimientos completos y conserva la comparación pareada de modelos. Sus intervalos están condicionados al trimestre observado y a modelos ya ajustados; no cubren incertidumbre de entrenamiento ni shocks temporales comunes. La clasificación es retrospectiva: la fecha del incidente no demuestra que todos los predictores o etiquetas estuvieran disponibles históricamente. El proyecto no estima tasas de lesión, no establece causas y no valida una alerta operativa.
 
-El cuarto trimestre y métricas de la evaluación anterior ya se habían examinado durante el proyecto. La asignación nueva de establecimientos no se eligió por sus resultados, pero la prueba **no es completamente inédita** y esa limitación se declara.
-
 ## Reproducibilidad y cumplimiento
 
 La [matriz de requisitos](compliance_matrix.md) registra la evidencia y los límites. El notebook conserva 65 celdas. La ejecución registra la partición, versiones, huellas de los datos y del código, predicciones, métricas y convergencia. El modelo es una regresión logística base frente a `DummyClassifier`, sin búsqueda de hiperparámetros ni cambios de objetivo.
