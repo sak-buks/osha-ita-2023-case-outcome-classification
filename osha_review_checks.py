@@ -63,50 +63,6 @@ def single_feature_checks(features, target, dates, cache):
     return saved['checks']
 
 
-def cross_partition_audit(data_path, cache):
-    """Inspect repeated keys without exporting narrative text or recoding incidents."""
-    cache = Path(cache)
-    identity = {'raw_sha256': sha256(data_path), 'implementation_sha256': sha256(__file__)}
-    if cache.exists():
-        saved = json.loads(cache.read_text(encoding='utf-8'))
-        if saved['signature'] == identity:
-            return saved
-    keys = ['establishment_id', 'case_number']
-    d = pd.read_csv(data_path, usecols=keys + ['id', 'date_of_incident'], dtype=str, encoding='latin1')
-    date = pd.to_datetime(d.date_of_incident, format='%m/%d/%Y', errors='coerce')
-    a, b = d.loc[date.dt.year.eq(2023) & date.lt('2023-10-01')], d.loc[date.dt.year.eq(2023) & date.ge('2023-10-01')]
-    ka = pd.MultiIndex.from_frame(a[keys].dropna())
-    kb = pd.MultiIndex.from_frame(b[keys].dropna())
-    shared = ka.unique().intersection(kb.unique())
-    parts = []
-    for chunk in pd.read_csv(data_path, dtype=str, encoding='latin1', chunksize=50000):
-        mask = pd.MultiIndex.from_frame(chunk[keys]).isin(shared)
-        if mask.any():
-            parts.append(chunk.loc[mask])
-    z = pd.concat(parts, ignore_index=True).replace(r'^\s*$', np.nan, regex=True)
-    date = pd.to_datetime(z.date_of_incident, format='%m/%d/%Y', errors='coerce')
-    z = z.loc[date.dt.year.eq(2023)].copy()
-    split = date.loc[z.index].ge('2023-10-01')
-    omitted = ['id', 'case_number', 'created_timestamp', 'date_of_incident']
-    content_columns = [c for c in z if c not in omitted]
-    content = pd.util.hash_pandas_object(z[content_columns], index=False)
-    comparison = z[keys].copy()
-    comparison['_content'] = content
-    ca = pd.MultiIndex.from_frame(comparison.loc[~split])
-    cb = pd.MultiIndex.from_frame(comparison.loc[split])
-    matches = ca.unique().intersection(cb.unique())
-    result = {'signature': identity, 'shared_case_keys': len(shared),
-        'shared_ita_ids': len(set(a.id) & set(b.id)),
-        'development_rows_with_shared_key': int(ka.isin(shared).sum()),
-        'test_rows_with_shared_key': int(kb.isin(shared).sum()),
-        'shared_keys_with_matching_content_except_administrative_fields_and_incident_date':
-            len(set((x[0], x[1]) for x in matches)),
-        'matched_content_patterns': len(matches), 'excluded_from_content_comparison': omitted,
-        'interpretation': 'Different incident dates by construction; matching content is a flag, not proof of a duplicate. No rows or labels changed.'}
-    cache.write_text(json.dumps(result, indent=2), encoding='utf-8')
-    return result
-
-
 def temporal_supplement(train, display, plt, Markdown):
     daily = train.groupby(train.incident_date.dt.normalize()).size().reindex(
         pd.date_range('2023-01-01', '2023-09-30'), fill_value=0)
