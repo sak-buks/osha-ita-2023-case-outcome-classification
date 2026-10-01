@@ -12,7 +12,7 @@ La evaluación primaria separa establecimientos y periodos: el modelo se desarro
 - Base de datos: [ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip](https://www.osha.gov/sites/default/largefiles/ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip) (~655 MB descomprimido; no se incluye en el repositorio).
 - Archivo local: `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv` (sin modificaciones).
 - Notebook: `osha_2023_eda_revisado.ipynb`.
-- Entorno: `ml_env`; versiones en `requirements.txt` y en el notebook ejecutado.
+- Dependencias: [`requirements.txt`](https://github.com/sak-buks/osha-ita-2023-case-outcome-classification/blob/main/requirements.txt) (Python 3.9; versiones usadas y semillas aleatorias fijadas). Las semillas también se listan en la sección 1.1 del notebook.
 - Implementación del modelo: `osha_group_time_study.py`, con utilidades comunes en `osha_deliverable_utils.py`.
 - Artefactos actuales: `osha_group_time_results/`; las evaluaciones anteriores se conservan separadamente como evidencia histórica.
 
