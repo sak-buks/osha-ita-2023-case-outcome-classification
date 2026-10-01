@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -9231,7 +9231,16 @@ Semilla del bootstrap: 142
 </section>
 <section id="conclusiones-y-limites">
 <h2>21. Conclusiones y límites<a class="headerlink" href="#conclusiones-y-limites" title="Link to this heading">#</a></h2>
-<p>La prueba usa incidentes de octubre–diciembre en establecimientos completamente excluidos del desarrollo, con separación temporal y de grupos. La clasificación es retrospectiva y no valida un sistema de alerta operativa. El modelo supera o no supera la referencia según las métricas reportadas; esto no establece causas ni utilidad para decisiones laborales. La prueba tiene 39 fallecimientos en empresas distintas: es suficiente para calcular métricas, pero no para una afirmación precisa de desempeño en esa clase.</p>
+<p><strong>Qué se encontró.</strong></p>
+<ul class="simple">
+<li><p><strong>El problema es difícil con estos datos.</strong> Con ocho predictores estructurados, la regresión logística mejora de forma clara a la referencia trivial en exactitud balanceada, F1 macro y AUC macro (cifras abajo), pero el desempeño es moderado: queda lejos del 80–90 % que haría sospechar una fuga (nota crítica más abajo).</p></li>
+<li><p><strong>La señal viene del lugar de trabajo y de la ocupación.</strong> Industria (NAICS, V de Cramér 0,24), ocupación (SOC, 0,21) y tipo de incidente concentran la asociación con el resultado (sección 8.1); las horas y el estado aportan poco.</p></li>
+<li><p><strong>Fallecimiento no se detecta de forma fiable.</strong> Es una clase extremadamente infrecuente (39 casos de prueba, en 39 establecimientos distintos): se reportan sus métricas con su intervalo de Wilson, pero no sostienen una afirmación de desempeño sobre esa clase.</p></li>
+<li><p><strong>La prueba es algo más optimista de lo que parece.</strong> Ningún establecimiento se repite entre desarrollo y prueba, pero muchos pertenecen a empresas que sí aparecen en ambas particiones (sección 11.1); la sección 18.1 mide si eso infla el desempeño. Además, los errores diarios están autocorrelacionados en el tiempo.</p></li>
+</ul>
+<p><strong>Qué decisiones se derivan del EDA.</strong> Los faltantes de SOC y de hora no son aleatorios (sección 5.2.1), por lo que se codifican como categoría explícita («Unknown») sin eliminar filas; los códigos nominales y las horas se codifican como categorías; se ponderan las clases por el desbalance; no se eliminan atípicos; y se valida hacia adelante en el tiempo y separando establecimientos (trazabilidad completa en la sección 12.1).</p>
+<p><strong>Límites.</strong> La clasificación es retrospectiva y no valida un sistema de alerta. El archivo contiene solo casos reportados, sin denominadores de exposición, así que no estima riesgo de lesión ni establece causas, y los resultados cubren un solo año. Los coeficientes (sección 20) son asociaciones, no efectos.</p>
+<p><strong>Siguiente paso.</strong> Probar modelos no lineales y la ingeniería de características candidata de la sección 12.1, evaluándolos solo con validación interna.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span><span class="o">=</span><span class="n">evaluation</span><span class="p">[</span><span class="s1">&#39;holdout_metrics&#39;</span><span class="p">][</span><span class="s1">&#39;LogisticRegression&#39;</span><span class="p">];</span> <span class="n">dummy</span><span class="o">=</span><span class="n">evaluation</span><span class="p">[</span><span class="s1">&#39;holdout_metrics&#39;</span><span class="p">][</span><span class="s1">&#39;DummyClassifier&#39;</span><span class="p">]</span>
@@ -9267,7 +9276,7 @@ Semilla del bootstrap: 142
 </section>
 <section id="reproducibilidad-y-analisis-secundarios">
 <h2>22. Reproducibilidad y análisis secundarios<a class="headerlink" href="#reproducibilidad-y-analisis-secundarios" title="Link to this heading">#</a></h2>
-<p>Entorno existente <code class="docutils literal notranslate"><span class="pre">ml_env</span></code>; sin tuning. Los artefactos del protocolo grupo-tiempo se guardan separadamente de resultados históricos y llevan identidad de datos, código, parámetros, versiones y partición. El CSV original no se modifica. La ejecución genera la interpretación cuantitativa.</p>
+<p>Entorno conda <code class="docutils literal notranslate"><span class="pre">ml_venv</span></code> (Python 3.9); sin ajuste de hiperparámetros. Los artefactos del protocolo grupo-tiempo se guardan separadamente de resultados históricos y llevan identidad de datos, código, parámetros, versiones y partición. El CSV original no se modifica. La ejecución genera la interpretación cuantitativa.</p>
 <p>Los sectores se incluyen cuando tienen al menos 1.000 casos en desarrollo, criterio fijado sin consultar desempeño de prueba. Se muestran ambos modelos y soporte por clase. Una clase ausente impide AUC macro de cuatro clases; no se reemplaza por cero. Las diferencias sectoriales no se interpretan como rankings de seguridad.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
