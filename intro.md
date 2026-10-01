@@ -13,7 +13,7 @@ La evaluación primaria separa establecimientos y periodos: el modelo se desarro
 - Implementación del modelo: `osha_group_time_study.py`, con utilidades comunes en `osha_deliverable_utils.py`.
 - Artefactos actuales: `osha_group_time_results/`; las evaluaciones anteriores se conservan separadamente como evidencia histórica.
 
-El libro presenta los resultados guardados. Ejecutar `python -u execute_notebook.py` en `ml_env` para reproducir el análisis y reconstruir Jupyter Book. La prueba por empresas y tiempo está fijada por semilla, soportes y huellas de datos y código.
+El libro presenta los resultados guardados. Para reproducir, abrir el notebook en un entorno con `requirements.txt` y, si se desea reconstruir el libro, instalar además `requirements-book.txt` y ejecutar `jupyter-book build .`. La prueba por empresas y tiempo está fijada por semilla, soportes y huellas de datos y código.
 
 ## Límites
 

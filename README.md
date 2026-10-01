@@ -1,29 +1,9 @@
-# Ejecución del entregable OSHA
+# OSHA ITA 2023: primer entregable
 
-Autores: Jaime Andres Besada, Ivan Prada.
-
-Usar un entorno conda existente del proyecto (`ml_venv` o `ml_env`); no instalar automáticamente `requirements.txt` sobre otro entorno. El archivo enumera las versiones con las que se ejecutó el notebook publicado.
-
-1. Abrir `_build/html/index.html` para leer el libro sin ejecutar Python ni disponer del CSV.
-2. Para reproducir, colocar el CSV original junto al notebook, en la carpeta superior del repositorio o establecer `OSHA_DATA_DIR` con su carpeta. Se espera `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv`, obtenido de [OSHA](https://www.osha.gov/itadata). La ejecución verifica una huella SHA-256 y no modifica el archivo.
-3. Ejecutar `python -u execute_notebook.py` con el Python del entorno (por ejemplo `C:\Users\<usuario>\miniconda3\envs\ml_venv\python.exe`). El programa antepone ese entorno al `PATH` y verifica que el kernel `python3` use ese mismo intérprete. Se ejecutan todas las celdas y se reconstruye Jupyter Book.
-4. Publicar en GitHub Pages: `ghp-import -n -p -f _build/html` (rama `gh-pages`) y en *Settings → Pages* elegir la rama `gh-pages`.
-5. Examinar `osha_group_time_results/delivery_verification.json` y `book_build.log`. La verificación acredita reproducibilidad e integridad computacional, no una calificación docente.
-
-## Diseño y cachés
-
-`osha_group_time_study.py` fija la asignación aleatoria de establecimientos (60 % a prueba, semilla 42) sin utilizar resultados del modelo. Esta proporción equilibra el soporte raro con el tamaño de entrenamiento: el preanálisis dejó 39 fallecimientos en prueba y 269.516 casos de desarrollo; no es una proporción exigida por el curso. Un cálculo de planificación con Wilson da cerca de ±15 puntos porcentuales si la sensibilidad verdadera ronda 50 %, pero no garantiza una conclusión precisa. El desarrollo usa enero–septiembre hasta el 23 de septiembre en el 40 % restante. La prueba usa octubre–diciembre exclusivamente en establecimientos reservados. Se purgan siete días antes de la prueba y de cada ventana de validación. Las validaciones son futuras y separadas por empresa. Filas fuera de esas celdas se excluyen y su total se informa.
-
-Los resultados y modelos se guardan en `osha_group_time_results/`; cada caché se asocia al hash SHA-256 del CSV, código, utilidades, parámetros, versiones y diseño. Los modelos de una identidad distinta no se reutilizan. La regresión logística y la referencia Dummy mantienen los parámetros base: no hay búsqueda de hiperparámetros ni ajuste por resultados de prueba.
-
-Los resultados y modelos vigentes están en `osha_group_time_results/`. `osha_temporal_results/` conserva salidas auxiliares que todavía usa el cuaderno, como el inventario reproducido y los diagnósticos univariables; los resultados de la partición temporal anterior se retiraron.
-
-## Auditoría y procedencia
-
-`osha_screening_results.json` conserva el inventario global y una primera evaluación agrupada histórica. `provenance/osha_screening.py` es su generador original sin modificar. `python reproduce_screening.py` reproduce únicamente el inventario y no reajusta el modelo principal.
-
-Los diagnósticos univariables se guardan aparte en `single_feature_checks.json`; no determinan los predictores. Los archivos de predicción y partición contienen identificadores para auditoría y no son datos anonimizados. El paquete omite el CSV original y las narrativas; limitar su distribución a la revisión académica.
-
-La instalación anterior cambió inesperadamente tres dependencias auxiliares, restauradas después: zipp 3.23.0, typing-extensions 4.14.1 e importlib-metadata 8.7.0. Se conserva la evidencia del inventario corregido y su verificación. Durante esta revisión no se modificaron paquetes.
-
-La pregunta es clasificación retrospectiva de cuatro resultados en incidentes reportados, no predicción de ocurrencia ni demostración de alerta temprana. Los intervalos por establecimiento no miden incertidumbre de entrenamiento ni choques comunes de calendario.
+- Notebook: `osha_2023_eda_revisado.ipynb` (salidas ya ejecutadas).
+- Módulos: `eda_utils.py`, `osha_deliverable_utils.py`, `osha_group_time_study.py`, `osha_review_checks.py`; inventario global en `osha_screening_results.json`.
+- Python 3.9 (el del curso). Dependencias: `pip install -r requirements.txt` (análisis) y `requirements-book.txt` (solo para construir Jupyter Book con `jupyter-book build .`).
+- Datos (no incluidos por tamaño): descargar [ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip](https://www.osha.gov/sites/default/largefiles/ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip) (fuente: [OSHA ITA](https://www.osha.gov/itadata)), extraer `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv` y colocarlo junto al notebook (o fijar la variable de entorno `OSHA_DATA_DIR`). Los cachés de resultados se regeneran al ejecutar (semillas fijas).
+- Los artefactos de predicción conservan identificadores y no son datos anonimizados; limitar su distribución a la revisión académica.
+- Autores: Jaime Andres Besada, Ivan Prada. Ejecutado en el entorno conda `ml_venv` (Python 3.9; versiones exactas en `requirements.txt`).
+- Publicar el libro: `jupyter-book build .` y luego `ghp-import -n -p -f _build/html` (rama `gh-pages`; activar en *Settings → Pages*).

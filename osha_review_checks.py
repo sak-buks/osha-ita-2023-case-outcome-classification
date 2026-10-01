@@ -24,6 +24,7 @@ def single_feature_checks(features, target, dates, cache):
     from threadpoolctl import threadpool_limits
     import sklearn
     cache = Path(cache)
+    cache.parent.mkdir(parents=True, exist_ok=True)
     identity = hashlib.sha256(pd.util.hash_pandas_object(
         features.assign(_target=target, _date=dates), index=True).values.tobytes()).hexdigest()
     signature = {'data': identity, 'implementation': sha256(__file__), 'sklearn': sklearn.__version__}
