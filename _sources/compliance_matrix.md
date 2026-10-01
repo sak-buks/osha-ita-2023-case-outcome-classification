@@ -1,0 +1,33 @@
+# Requisitos, evidencia y límites
+
+Referencia: *Entregable1MachineLearningProject.pdf*, secciones de datos, EDA, modelado y entrega; revisión centrada en pp. 3, 5–6 y 9–11. El peso del EDA exige interpretar hallazgos y decisiones, no solo producir gráficas. Esta matriz no sustituye la evaluación docente.
+
+| Requisito | Evidencia en la entrega | Estado y límite |
+|---|---|---|
+| Datos, ≥20.000 filas, entidades, n/p y diccionario | Secciones 1–4 y salida del pipeline | Documentado: 890.934 filas originales; 269.516 desarrollo, 127.391 prueba, restantes excluidas por diseño grupo-tiempo; entidades y dimensión codificada informadas |
+| Fuente, acceso, licencia, calidad y ética | Fuentes oficiales; obra del gobierno federal de EE. UU. (17 U.S.C. § 105); cobertura en sección 1; auditorías de faltantes, códigos y claves | Documentado; dominio público no equivale a anonimato: no se publican identidades ni narrativas |
+| EDA univariado | Secciones 5.1 y 5.1.1: cardinalidad, frecuencias, histogramas, boxplots, media/mediana/percentiles, asimetría, curtosis, D'Agostino y Shapiro, IQR, media circular, categorías raras y su tratamiento | Implementado; la normalidad se reporta con cautela (n grande) |
+| EDA bivariado | Secciones 8, 8.1–8.1.2: tablas de contingencia, χ², V de Cramér, NMI, hexbin y Pearson/Spearman de horas, violin plots, Kruskal–Wallis, Mann–Whitney por pares con biserial por rangos, Holm y FDR, GVIF | Implementado; tamaños de efecto junto a p-valores; p-valores asumen independencia que no se cumple dentro de establecimientos |
+| EDA multivariado | Secciones 8.2–8.3: TruncatedSVD (varianza acumulada), Isolation Forest, Mahalanobis sobre componentes, K-means con silueta | Implementado; descriptivo, no elimina filas ni crea predictores |
+| Faltantes: patrón y mecanismo | Sección 5.2 (matriz de nulos) y 5.2.1 (completos vs incompletos, agrupamiento por establecimiento vs simulación MCAR) | MCAR descartado; compatible con MAR por establecimiento/sector; MNAR no descartable. Little no aplica a nominales |
+| Valores imposibles y transformaciones | EDA de calidad, máscaras de hora, SOC, categorías desconocidas | Implementado; código 0 de establecimiento no documentado se conserva literalmente |
+| Claves repetidas y separación de la prueba | Auditoría de ID y claves dentro del desarrollo; partición agrupada por establecimiento | Implementado: ningún ID ITA repetido en desarrollo y ningún establecimiento compartido entre desarrollo y prueba; las claves repetidas se señalan, no se eliminan automáticamente |
+| Dependencia entre entidades y separación agrupada | Identificadores de partición, conteos por empresa, CV agrupada y bootstrap | **Separación primaria estricta:** empresas distintas en desarrollo y prueba; cero solapamiento. Validación interna también separa grupos |
+| Prueba separada por grupo y tiempo; sin ajuste por métricas de prueba | Partición fija por establecimiento y fecha; regresión logística base frente a Dummy, sin búsqueda de hiperparámetros | **Implementado:** establecimientos distintos entre desarrollo y prueba; la evaluación primaria usa un periodo posterior y no se usa para seleccionar empresas, variables, modelos ni parámetros por desempeño |
+| Fechas: orden temporal, validación futura, gap | Corte octubre; tres ventanas futuras y purga temporal | Implementado: entrenamiento anterior a validación/prueba, separación por grupos y purga fija de siete días. Persisten dependencia temporal común y disponibilidad histórica desconocida |
+| EDA temporal | Media/varianza móvil, distribuciones por semana/mes, STL, ADF/KPSS, ACF/PACF, deriva Q1–Q3 | Implementado en desarrollo. ADF/KPSS inconclusos; un solo año no prueba ciclo anual estable |
+| Rezagos, calendario, cambios y heterogeneidad por entidad | Proporciones diarias manufactura/ausencia en rezagos 0/1/7/14; ventanas de 28 días; resúmenes trimestrales por entidad | Descriptivo: sin causalidad ecológica, fechas de cambio confirmadas ni atribución a festivos; selección de entidades ≥30 casos y presencia en Q1–Q3 explícita |
+| Efectos de calendario y deriva | Sección 9.1: feriados federales frente al mismo día de la semana; TVD del resultado entre trimestres; deriva condicional por sector y tipo de incidente; sección 23: deriva de predictores | Implementado dentro del desarrollo; la maduración de etiquetas no es verificable sin versiones históricas |
+| Análisis espacial | Sección 9.2: heterogeneidad por estado con IC de Wilson; justificación de no aplicabilidad de 2.7–2.8 | Sin coordenadas: I de Moran, LISA y variogramas no aplicables; estado como predictor categórico |
+| Entidades repetidas entre particiones | Sección 11.1 (EIN y razón social compartidos entre desarrollo y prueba) y 19.1 (sensibilidad del desempeño) | Cuantificado; la partición por establecimiento no se cambió después de ver resultados |
+| Preprocesamiento trazable | Sección 13.1: tabla paso del Pipeline → hallazgo del EDA; diagrama del Pipeline; ingeniería de características candidata | Implementado; las características candidatas se dejan para el siguiente entregable |
+| Modelos y pipeline | Dummy prior + logística balanceada; imputación y one-hot dentro de cada ajuste | Implementado, sin tuning; ocho predictores, cuatro clases; ajustes primarios convergentes |
+| Métricas y explicación | Métricas macro/por clase, ROC/PR, calibración, coeficientes y curvas de aprendizaje | Implementado; mala precisión de Death explícita; brecha train/validación no desaparece |
+| Incertidumbre y análisis secundario | Bootstrap pareado por establecimiento; Wilson para sensibilidad Death; sectores | Condicional al trimestre/modelos; Wilson para 39 fallecimientos en empresas distintas es amplio y no respalda una afirmación precisa de detección. No cubre choques comunes de calendario ni variación de entrenamiento |
+| Hallazgo → implicación → decisión | Tabla de síntesis EDA, sección 13 | Implementado; sin cambiar datos o objetivo para mejorar desempeño |
+| Nota crítica (desempeño ≥ 80–90 %) | Sección 22: exactitud frente al umbral, AUC univariado máximo, comparación con Dummy | No aplica la alerta: desempeño moderado y sin señales de fuga |
+| Reproducibilidad y Jupyter Book | Notebook ejecutado de principio a fin, dependencias, semillas, código de cribado, manifiesto de artefactos, verificador | Verificable por ejecución y extracción del paquete; la matriz resume evidencia y límites para revisión académica |
+
+## Antes de entregar
+
+Documentar la purga temporal y la exclusión de filas necesarias para separar empresa y tiempo. No afirmar que la sensibilidad de Death está estimada con precisión. Revisar las conclusiones conjuntamente. No continuar afinando modelos sobre estos resultados.
