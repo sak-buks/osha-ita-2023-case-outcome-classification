@@ -1,10 +1,18 @@
 title: "OSHA ITA 2023: clasificación de resultados de incidentes laborales"
-author: "Proyecto de Machine Learning"
+author: "Jaime Andres Besada, Ivan Prada"
 only_build_toc_files: true
+# El notebook no se re-ejecuta al construir el libro: se usan las salidas guardadas
+# (la ejecución completa requiere el CSV original de ~655 MB, que no está en el repositorio).
 execute:
   execute_notebooks: 'off'
+# El notebook y los .md se construyen desde la raíz del repositorio.
+exclude_patterns: [_build, provenance, osha_group_time_results, osha_temporal_results, README.md, "**.ipynb_checkpoints"]
+repository:
+  url: https://github.com/sak-buks/osha-ita-2023-case-outcome-classification
+  branch: main
 html:
-  use_repository_button: false
+  use_repository_button: true
+  use_issues_button: false
 sphinx:
   config:
     language: es

@@ -10,15 +10,21 @@ if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 ROOT=Path(__file__).resolve().parent
-assert Path(sys.prefix).name.lower()=='ml_env'
+ENV_NAME=Path(sys.prefix).name
+assert ENV_NAME.lower() in {'ml_env','ml_venv'}, 'Ejecutar con el Python del entorno conda del proyecto (ml_venv o ml_env).'
 os.chdir(ROOT)
 path=ROOT/'osha_2023_eda_revisado.ipynb'
 notebook=nbformat.read(path,as_version=4)
 # The installed python3 kernel points to ml_env; do not create or modify a global kernel.
 from jupyter_client.kernelspec import KernelSpecManager
 spec=KernelSpecManager().get_kernel_spec('python3')
-assert Path(spec.argv[0]).resolve()==Path(sys.executable).resolve()
-notebook.metadata.kernelspec={'display_name':'Python (ml_env)','language':'python','name':'python3'}
+# Conda kernelspecs may call a bare "python"; put this environment first so it resolves here.
+env_root=Path(sys.executable).parent
+os.environ['PATH']=os.pathsep.join([str(env_root),str(env_root/'Library'/'bin'),str(env_root/'Scripts'),os.environ.get('PATH','')])
+import shutil
+kernel_python=Path(spec.argv[0]) if Path(spec.argv[0]).is_absolute() else Path(shutil.which(spec.argv[0]))
+assert kernel_python.resolve()==Path(sys.executable).resolve(), kernel_python
+notebook.metadata.kernelspec={'display_name':f'Python ({ENV_NAME})','language':'python','name':'python3'}
 results=ROOT/'osha_group_time_results'
 def checkpoint(cell, cell_index, **kwargs):
     nbformat.write(notebook,path)

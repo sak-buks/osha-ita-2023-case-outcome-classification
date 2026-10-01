@@ -1,11 +1,14 @@
 # Ejecución del entregable OSHA
 
-Usar el entorno existente `ml_env`; no instalar automáticamente `requirements.txt` sobre otro entorno. El archivo enumera versiones verificadas, no autoriza cambios de paquetes.
+Autores: Jaime Andres Besada, Ivan Prada.
+
+Usar un entorno conda existente del proyecto (`ml_venv` o `ml_env`); no instalar automáticamente `requirements.txt` sobre otro entorno. El archivo enumera las versiones con las que se ejecutó el notebook publicado.
 
 1. Abrir `_build/html/index.html` para leer el libro sin ejecutar Python ni disponer del CSV.
-2. Para reproducir, colocar el CSV original junto al notebook o establecer `OSHA_DATA_DIR` con su carpeta. Se espera `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv`, obtenido de [OSHA](https://www.osha.gov/itadata). La ejecución verifica una huella SHA-256 y no modifica el archivo.
-3. Ejecutar `python -u execute_notebook.py` con el Python de `ml_env`. El kernel `python3` debe apuntar a ese mismo Python; el programa lo verifica sin modificarlo. Se ejecutan las 65 celdas y se reconstruye Jupyter Book.
-4. Examinar `osha_group_time_results/delivery_verification.json` y `book_build.log`. La verificación acredita reproducibilidad e integridad computacional, no una calificación docente.
+2. Para reproducir, colocar el CSV original junto al notebook, en la carpeta superior del repositorio o establecer `OSHA_DATA_DIR` con su carpeta. Se espera `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv`, obtenido de [OSHA](https://www.osha.gov/itadata). La ejecución verifica una huella SHA-256 y no modifica el archivo.
+3. Ejecutar `python -u execute_notebook.py` con el Python del entorno (por ejemplo `C:\Users\<usuario>\miniconda3\envs\ml_venv\python.exe`). El programa antepone ese entorno al `PATH` y verifica que el kernel `python3` use ese mismo intérprete. Se ejecutan todas las celdas y se reconstruye Jupyter Book.
+4. Publicar en GitHub Pages: `ghp-import -n -p -f _build/html` (rama `gh-pages`) y en *Settings → Pages* elegir la rama `gh-pages`.
+5. Examinar `osha_group_time_results/delivery_verification.json` y `book_build.log`. La verificación acredita reproducibilidad e integridad computacional, no una calificación docente.
 
 ## Diseño y cachés
 

@@ -27,7 +27,7 @@ def single_feature_checks(features, target, dates, cache):
     identity = hashlib.sha256(pd.util.hash_pandas_object(
         features.assign(_target=target, _date=dates), index=True).values.tobytes()).hexdigest()
     signature = {'data': identity, 'implementation': sha256(__file__), 'sklearn': sklearn.__version__}
-    saved = json.loads(cache.read_text()) if cache.exists() else {}
+    saved = json.loads(cache.read_text(encoding='utf-8')) if cache.exists() else {}
     if saved.get('signature') != signature:
         saved = {'signature': signature, 'checks': []}
     before = dates.lt('2023-08-01')
@@ -64,8 +64,9 @@ def single_feature_checks(features, target, dates, cache):
 
 
 def temporal_supplement(train, display, plt, Markdown):
+    # The calendar ends at the last development date: the purged days are not zero-case days.
     daily = train.groupby(train.incident_date.dt.normalize()).size().reindex(
-        pd.date_range('2023-01-01', '2023-09-30'), fill_value=0)
+        pd.date_range('2023-01-01', train.incident_date.max().normalize()), fill_value=0)
     frame = daily.rename('Casos').to_frame()
     frame['Día de semana'] = frame.index.dayofweek + 1
     frame['Mes'] = frame.index.month
@@ -107,3 +108,4 @@ def temporal_supplement(train, display, plt, Markdown):
         'Rango entre trimestres de proporción de ausencia': away.loc[selected].max(axis=1)-away.loc[selected].min(axis=1)})
     display(summary.describe(percentiles=[.25, .5, .75, .9]))
     display(Markdown(f'Heterogeneidad: **{selected.sum():,} establecimientos** con ≥30 casos de desarrollo y presencia en los tres trimestres, criterio descriptivo fijado antes del cálculo. No se publican sus identidades. Las correlaciones agregadas no prueban relaciones individuales ni capacidad predictiva. El calendario se describe por semana y mes; no se atribuyen cambios a festivos, políticas o exposición sin datos externos.'))
+    return {'lags': pd.DataFrame(rows), 'heterogeneity': summary, 'selected_establishments': int(selected.sum())}

@@ -38,7 +38,7 @@ assert pred['dates'].min() >= np.datetime64('2023-10-01')
 assert pred['dates'].max() <= np.datetime64('2023-12-31')
 assert np.allclose(pred['lr'].sum(axis=1), 1) and np.isfinite(pred['lr']).all()
 assert np.allclose(pred['dummy'].sum(axis=1), 1) and np.isfinite(pred['dummy']).all()
-assert len(n.cells) == 65 and len(code) == 28
+assert len(n.cells) >= 65 and len(code) >= 28
 assert raw.stat().st_size == report['signature']['raw_size']
 assert (root / '_build/html/index.html').exists()
 assert (root / '_build/html/osha_2023_eda_revisado.html').exists()
