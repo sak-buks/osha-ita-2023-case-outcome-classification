@@ -4,16 +4,19 @@ Este primer entregable estudia cuatro resultados registrados en casos de lesión
 
 La evaluación primaria separa establecimientos y periodos: el modelo se desarrolla con enero–septiembre en establecimientos asignados al desarrollo y se prueba en octubre–diciembre en establecimientos reservados. Se purgan siete días antes de los cortes temporales de evaluación. La clase de fallecimiento es muy infrecuente y se presenta con sus métricas e incertidumbre.
 
+**Autores:** Jaime Andres Besada, Ivan Prada.
+
 ## Datos y ejecución
 
 - [Fuente oficial](https://www.osha.gov/itadata).
+- Base de datos: [ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip](https://www.osha.gov/sites/default/largefiles/ITA_Case_Detail_Data_2023_through_12-31-2023OIICS.zip) (~655 MB descomprimido; no se incluye en el repositorio).
 - Archivo local: `ITA Case Detail Data 2023 through 12-31-2023OIICS.csv` (sin modificaciones).
 - Notebook: `osha_2023_eda_revisado.ipynb`.
 - Entorno: `ml_env`; versiones en `requirements.txt` y en el notebook ejecutado.
 - Implementación del modelo: `osha_group_time_study.py`, con utilidades comunes en `osha_deliverable_utils.py`.
 - Artefactos actuales: `osha_group_time_results/`; las evaluaciones anteriores se conservan separadamente como evidencia histórica.
 
-El libro presenta los resultados guardados. Ejecutar `python -u execute_notebook.py` en `ml_env` para reproducir el análisis y reconstruir Jupyter Book. La prueba por empresas y tiempo está fijada por semilla, soportes y huellas de datos y código.
+El libro presenta los resultados guardados. Para reproducir, abrir el notebook en un entorno con `requirements.txt` y, si se desea reconstruir el libro, instalar además `requirements-book.txt` y ejecutar `jupyter-book build .`. La prueba por empresas y tiempo está fijada por semilla, soportes y huellas de datos y código.
 
 ## Límites
 
