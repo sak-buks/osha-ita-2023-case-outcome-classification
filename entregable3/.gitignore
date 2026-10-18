@@ -1,0 +1,15 @@
+# Resultados pesados o regenerables (las predicciones por tarea se comparten fuera de git)
+results/runs/
+results/folds/
+results/locks/
+results/smoke_runs/
+results/test_runs/
+results/*_tests.csv
+results/run_pid.txt
+results/*.log
+results/timing_fold3_part*.csv
+results/timing_fold3.csv
+results/timing_fold3_xgboost_svm.csv
+
+# Los CSV pequeños de resultados sí se versionan (el .gitignore de la raíz excluye *.csv por el dataset)
+!results/*.csv
