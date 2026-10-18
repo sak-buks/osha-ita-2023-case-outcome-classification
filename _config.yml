@@ -1,5 +1,5 @@
 title: "OSHA ITA 2023: clasificación de resultados de incidentes laborales"
-author: "Jaime Andres Besada, Ivan Prada"
+author: "Jaime Andres Besada, Ivan Berrio"
 only_build_toc_files: true
 # El notebook no se re-ejecuta al construir el libro: se usan las salidas guardadas
 # (la ejecución completa requiere el CSV original de ~655 MB, que no está en el repositorio).
