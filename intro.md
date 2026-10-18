@@ -4,7 +4,7 @@ Este primer entregable estudia cuatro resultados registrados en casos de lesión
 
 La evaluación primaria separa establecimientos y periodos: el modelo se desarrolla con enero–septiembre en establecimientos asignados al desarrollo y se prueba en octubre–diciembre en establecimientos reservados. Se purgan siete días antes de los cortes temporales de evaluación. La clase de fallecimiento es muy infrecuente y se presenta con sus métricas e incertidumbre.
 
-**Autores:** Jaime Andres Besada, Ivan Prada.
+**Autores:** Jaime Andres Besada, Ivan Berrio.
 
 ## Datos y ejecución
 
